@@ -1,3 +1,7 @@
+## Prerequirements
+1. Latest Docker and Docker Compose.
+2. Executable permissions for `run.sh`.
+
 ## Steps to run
-1. Rewrite the .env with project settings
-2. Run `bash start.sh` to start the project (`sudo chmod +x start.sh` if you get permission denied error)
+1. Rewrite `.env` file with your own settings.
+2. Hit `bash run.sh` to start the server.
