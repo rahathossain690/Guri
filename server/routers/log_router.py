@@ -9,6 +9,8 @@ log_router = APIRouter(
 @log_router.post("/", summary="Add Logs")
 async def add_single_log(request: Request):
     try:
+        # TODO: parse log data properly
+
         body = await request.body()
         body_str = body.decode('utf-8')
 
