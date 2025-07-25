@@ -5,7 +5,7 @@ import json
 from confluent_kafka import Producer
 
 log_router = APIRouter(
-    prefix="/log",
+    prefix="/api/v1/log",
     tags=["Log"],
 )
 
