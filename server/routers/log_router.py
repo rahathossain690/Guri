@@ -31,7 +31,7 @@ async def add_single_log(request: Request):
         parsed_data = dict()
         parsed_data["provider"] = "guri" # TODO: Replace with actual provider logic
         parsed_data["data"] = body_str
-        parsed_data["timestamp"] = datetime.datetime.now()
+        parsed_data["timestamp"] = datetime.datetime.now().isoformat()
 
         print(parsed_data)
 
@@ -49,4 +49,5 @@ async def add_single_log(request: Request):
         )
 
     except Exception as e:
+        print(f"[LOG_ROUTER][ERROR] Error adding log: {e}")
         raise HTTPException(status_code=400, detail=str(e))
