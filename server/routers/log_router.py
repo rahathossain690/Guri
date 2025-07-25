@@ -3,6 +3,7 @@ import datetime
 import os
 import json
 from confluent_kafka import Producer
+from model.raw_log import RawLog
 
 log_router = APIRouter(
     prefix="/api/v1/log",
@@ -23,25 +24,23 @@ def delivery_report(err, msg):
 @log_router.post("/", summary="Add Logs")
 async def add_single_log(request: Request):
     try:
-        # TODO: parse log data properly
-
         body = await request.body()
         body_str = body.decode('utf-8')
 
-        parsed_data = dict()
-        parsed_data["provider"] = "guri" # TODO: Replace with actual provider logic
-        parsed_data["data"] = body_str
-        parsed_data["timestamp"] = datetime.datetime.now().isoformat()
+        log = RawLog(
+            provider="guri",  # TODO: Replace with actual provider logic
+            data=body_str,
+            timestamp=datetime.datetime.now().isoformat()
+        )
 
-        print(parsed_data)
+        print(log.dict())
 
         producer.produce(
             KAFKA_TOPIC_RAW,
             key=None,
-            value=json.dumps(parsed_data).encode('utf-8'),
+            value=log.json().encode('utf-8'),
             callback=delivery_report
         )
-        
         producer.flush()
 
         return Response(

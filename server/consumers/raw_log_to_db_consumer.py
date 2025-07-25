@@ -3,7 +3,8 @@ import json
 import time
 import threading
 from confluent_kafka import Consumer
-from db import execute_query
+from database.db import execute_query
+from model.raw_log import RawLog
 
 KAFKA_BROKER = os.environ.get("KAFKA_BROKER", "kafka:9093")
 KAFKA_TOPIC_RAW = os.environ.get("KAFKA_TOPIC_RAW", "raw_logs")
@@ -49,11 +50,9 @@ class RawLogToDBConsumer:
                     continue
                 try:
                     log_data = json.loads(msg.value().decode('utf-8'))
-                    provider = log_data.get("provider")
-                    data = log_data.get("data")
-                    timestamp = log_data.get("timestamp")
-                    execute_query(INSERT_LOG_SQL, (provider, data, timestamp))
-                    print(f"Saved log: {log_data}")
+                    log = RawLog(**log_data)
+                    execute_query(INSERT_LOG_SQL, (log.provider, log.data, log.timestamp))
+                    print(f"Saved log: {log.dict()}")
                 except Exception as e:
                     print(f"Failed to save log: {e}")
                 time.sleep(0.1)

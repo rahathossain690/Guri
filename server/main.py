@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 from routers.health_router import health_router
 from routers.log_router import log_router
-from raw_log_to_db_consumer import start_raw_log_to_db_consumer, stop_raw_log_to_db_consumer
+from consumers.raw_log_to_db_consumer import start_raw_log_to_db_consumer, stop_raw_log_to_db_consumer
 
 app = FastAPI(
     title="Guri",
